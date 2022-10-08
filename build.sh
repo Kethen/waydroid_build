@@ -14,6 +14,7 @@ podman run \
 	-v ./src:/src \
 	-w /src \
 	-v ./scripts:/scripts:ro \
+	-v ./patches:/patches:ro \
 	$EXTRA_ARG \
 	docker-lineage-cicd \
 	/scripts/script

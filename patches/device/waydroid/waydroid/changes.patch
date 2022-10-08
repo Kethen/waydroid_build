@@ -1,0 +1,59 @@
+diff --git a/BoardConfig.mk b/BoardConfig.mk
+index 922a6a8..b6211dc 100644
+--- a/BoardConfig.mk
++++ b/BoardConfig.mk
+@@ -61,7 +61,12 @@ TARGET_COPY_OUT_VENDOR := vendor
+ BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3547483648
+ BOARD_VENDORIMAGE_PARTITION_SIZE := 1547483648
+-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
++BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := squashfs
++BOARD_VENDORIMAGE_SQUASHFS_COMPRESSOR := gzip
++BOARD_VENDORIMAGE_SQUASHFS_COMPRESSOR_OPT := -Xcompression-level 9
++BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := squashfs
++BOARD_SYSTEMIMAGE_SQUASHFS_COMPRESSOR := gzip
++BOARD_SYSTEMIMAGE_SQUASHFS_COMPRESSOR_OPT := -Xcompression-level 9
+ 
+ # Disable scudo
+ MALLOC_SVELTE := true
+diff --git a/device.mk b/device.mk
+index 4d34de3..9fb8958 100644
+--- a/device.mk
++++ b/device.mk
+@@ -14,6 +14,12 @@
+ # limitations under the License.
+ #
+ 
++# disable mesa
++TARGET_USE_MESA := false
++
++# load microg and fdroid
++WITH_GMS=true
++
+ # Inherit from aosp products.
+ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
+ $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_p.mk)
+@@ -22,6 +28,15 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_p.mk)
+ $(call inherit-product-if-exists, vendor/lineage/config/common_full_tablet_wifionly.mk)
+ $(call inherit-product-if-exists, vendor/bliss/config/common_full_tablet_wifionly.mk)
+ 
++# bromite and bromite webview
++PRODUCT_PACKAGES += \
++	org.bromite.bromite \
++	com.android.webview
++
++# set persist.waydroid.height_padding
++PRODUCT_COPY_FILES += \
++	device/waydroid/waydroid/waydroid_persist_props.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/waydroid_persist_props.rc
++
+ # Audio HAL
+ PRODUCT_PACKAGES += \
+     android.hardware.audio@2.0-service \
+diff --git a/waydroid_persist_props.rc b/waydroid_persist_props.rc
+new file mode 100644
+index 0000000..37ee2a7
+--- /dev/null
++++ b/waydroid_persist_props.rc
+@@ -0,0 +1,2 @@
++on zygote-start
++	setprop persist.waydroid.height_padding 50

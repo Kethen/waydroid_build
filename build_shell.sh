@@ -8,4 +8,5 @@ podman run \
 	-v ./src:/src \
 	-w /src \
 	-v ./scripts:/scripts:ro \
+	-v ./patches:/patches:ro \
 	docker-lineage-cicd
