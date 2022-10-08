@@ -1,0 +1,3 @@
+set -xe
+#bash /scripts/prepare_repository
+bash /scripts/build

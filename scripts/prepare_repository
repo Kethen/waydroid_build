@@ -1,0 +1,27 @@
+set -xe
+
+JOB_ARG=""
+if [ -n "$THREADS" ]
+then
+	JOB_ARG="-j${THREADS}"
+fi
+
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
+repo init -u https://github.com/LineageOS/android.git -b lineage-18.1
+repo sync $JOB_ARG -c --force-sync
+
+wget -O - https://raw.githubusercontent.com/waydroid/android_vendor_waydroid/lineage-18.1/manifest_scripts/generate-manifest.sh | bash
+repo sync $JOB_ARG -c --force-sync
+
+source build/envsetup.sh
+apply-waydroid-patches
+
+# TODO
+# clone foss repo for bromite webview and bromite
+# clone microg partner gms
+# add bromite repo to additional fdroid repos
+# disable mesa
+# add extra packages
+# integrate "waydroid prop set persist.waydroid.height_padding 50" somehow

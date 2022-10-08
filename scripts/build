@@ -1,0 +1,26 @@
+set -xe
+
+JOB_ARG=""
+if [ -n "$THREADS" ]
+then
+	JOB_ARG="-j${THREADS}"
+fi
+
+export USE_CCACHE=1
+export CCACHE_EXEC=/usr/bin/ccache
+export CCACHE_DIR=/ccache
+ccache -M 50G
+
+# TARGET_USE_MESA=false defined in device.mk
+# WITH_GMS=true defined in device.mk, to be used with https://github.com/lineageos4microg/android_vendor_partner_gms
+# additional packages are added with PRODUCT_PACKAGES += in device.mk
+
+source build/envsetup.sh
+lunch lineage_waydroid_arm64-userdebug
+make $JOB_ARG systemimage
+make $JOB_ARG vendorimage
+
+apt update; apt install -y simg2img
+simg2img out/target/product/waydroid_arm64/system.img out/target/product/waydroid_arm64/system.sfs
+simg2img out/target/product/waydroid_arm64/vendor.img out/target/product/waydroid_arm64/vendor.sfs
+
