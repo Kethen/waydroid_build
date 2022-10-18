@@ -35,13 +35,3 @@ git clone https://github.com/lineageos4microg/android_vendor_partner_gms.git ven
 	cd device/waydroid/waydroid
 	git apply /patches/device/waydroid/waydroid/changes.patch
 )
-
-(
-	cd external/minigbm
-	git apply /patches/external/minigbm/changes.patch
-)
-
-(
-	cd hardware/waydroid
-	git apply /patches/hardware/waydroid/changes.patch
-)

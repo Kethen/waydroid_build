@@ -16,7 +16,6 @@ lunch lineage_waydroid_arm64-userdebug
 make $JOB_ARG systemimage
 make $JOB_ARG vendorimage
 
-apt update; apt install -y simg2img
 simg2img out/target/product/waydroid_arm64/system.img out/target/product/waydroid_arm64/system.sfs
 simg2img out/target/product/waydroid_arm64/vendor.img out/target/product/waydroid_arm64/vendor.sfs
 
