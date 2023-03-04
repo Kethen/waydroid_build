@@ -18,9 +18,9 @@ repo sync $JOB_ARG -c --force-sync
 source build/envsetup.sh
 apply-waydroid-patches
 
-git clone https://github.com/Kethen/vendor_foss.git -b minimal vendor/foss
+git clone https://github.com/Kethen/vendor_foss.git -b minimal_a12 vendor/foss
 (
-	apt update; apt install -y xmlstarlet
+	apt update; apt install -y xmlstarlet aapt
 	cd vendor/foss
 	bash update.sh
 )
@@ -34,4 +34,9 @@ git clone https://github.com/lineageos4microg/android_vendor_partner_gms.git ven
 (
 	cd device/waydroid/waydroid
 	git apply /patches/device/waydroid/waydroid/changes.patch
+)
+
+(
+	cd vendor/lineage
+	git apply /patches/vendor/lineage/bromite_webview.patch
 )

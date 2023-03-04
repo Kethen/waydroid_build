@@ -40,7 +40,7 @@ index 4d34de3..9fb8958 100644
 +# bromite and bromite webview
 +PRODUCT_PACKAGES += \
 +	org.bromite.bromite \
-+	com.android.webview
++	org.bromite.webview
 +
 +# set persist.waydroid.height_padding
 +PRODUCT_COPY_FILES += \
